@@ -14,3 +14,8 @@ export interface Pokemon {
   pictureUrl: string;
   id: number;
 }
+
+export interface ComponentStructure {
+  render: () => void;
+  remove: () => void;
+}
