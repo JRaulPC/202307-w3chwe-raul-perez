@@ -1,8 +1,11 @@
-import pokemonData from "./globals.js";
-import { type PokemonData } from "./types.js";
+import parsePokemonData from "./parsePokemonData.js";
 
-const pokemonDataResponse = await fetch(pokemonData);
+const pagePokemonsCall = parsePokemonData();
 
-const { results: pokemons } = (await pokemonDataResponse.json()) as {
-  results: PokemonData[];
-};
+pagePokemonsCall
+  .then((newPokemon) => {
+    console.log(newPokemon);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
