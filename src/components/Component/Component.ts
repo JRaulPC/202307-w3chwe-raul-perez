@@ -1,4 +1,4 @@
-import { type ComponentStructure } from "../../types";
+import { type ComponentStructure } from "../../types.js";
 
 class Component implements ComponentStructure {
   protected readonly element: Element;
