@@ -5,7 +5,7 @@ export interface PokemonListResponse {
 
 export interface PokemonDataResponse {
   name: string;
-  sprites: Record<string, string>;
+  sprites: { other: { home: { front_default: string } } };
   id: number;
 }
 
