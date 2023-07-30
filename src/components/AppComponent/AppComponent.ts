@@ -14,10 +14,10 @@ class AppComponent extends Component {
 
     (async () => {
       const pokemons: Pokemon[] = await this.parsePokemonData();
-      const mainContent = this.element.querySelector(".main-page")!;
+      const mainHeader = this.element.querySelector(".main-header")!;
 
-      const renderedPokemonPage = new PokemonPage(mainContent, pokemons);
-      renderedPokemonPage.render();
+      const pokemonPage = new PokemonPage(mainHeader, pokemons);
+      pokemonPage.render();
       await this.goToNextPage();
     })();
   }

@@ -7,7 +7,7 @@ class PokemonPage extends Component {
     parentElement: Element,
     private readonly pagePokemons: Pokemon[]
   ) {
-    super(parentElement, "main", "main-page");
+    super(parentElement, "header", "main-header");
   }
 
   render() {
