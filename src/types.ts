@@ -1,8 +1,13 @@
 export interface PokemonListResponse {
-  next: string;
-  previous: string | undefined;
+  count: number;
+  next: URL;
+  previous: URL;
+  results: PokemonResult[];
+}
+
+export interface PokemonResult {
   name: string;
-  url: string;
+  url: URL;
 }
 
 export interface PokemonDataResponse {
