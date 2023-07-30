@@ -7,7 +7,7 @@ describe("Given an PokemonCardComponent component", () => {
       const container = document.createElement("div");
       const bulbasaur: Pokemon = {
         id: 1,
-        name: "bulbasaur",
+        name: "Bulbasaur",
         pictureUrl: "",
       };
 

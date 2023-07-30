@@ -9,9 +9,12 @@ body {
   font-family: "Playfair Display", "Rubik", sans-serif;
   height: 100%;
   margin-bottom: 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  background-color: rgb(72 137 137);
 }
-
+h2 {
+  margin-bottom: 0;
+}
 html {
 }
 
@@ -22,7 +25,12 @@ a {
 input,
 button {
   font: inherit;
-  border: none;
+  margin: 30px auto;
+  width: 60%;
+  height: 20%;
+  border-radius: 6px;
+  background-color: #ffffff;
+  padding: 10px 20px;
 }
 
 button {
@@ -31,20 +39,52 @@ button {
 
 ul {
   list-style-type: none;
+  padding: 0;
 }
 
 img {
   max-width: 200px;
-  max-height: 200px;
+  max-height: 130px;
 }
 
 .container {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.main-header img {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .pokemons-list {
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 5px;
+  grid-area: auto;
   justify-items: center;
+  margin: 0;
+  border-radius: 1px;
+}
+
+.pokemon-card {
+  background-image: url("../img/pokemon-background-card.webp");
+  background-position: right;
+  background-size: cover;
+  border: solid midnightblue 2px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  height: 250px;
+  max-height: 280;
+}
+
+.pokemon-card__id {
+  display: block;
+  position: relative;
+  bottom: 12px;
+  font-style: italic;
 }
