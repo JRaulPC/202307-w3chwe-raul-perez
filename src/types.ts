@@ -1,4 +1,6 @@
 export interface PokemonListResponse {
+  next: string;
+  previous: string | undefined;
   name: string;
   url: string;
 }
@@ -10,12 +12,17 @@ export interface PokemonDataResponse {
 }
 
 export interface Pokemon {
+  id: number;
   name: string;
   pictureUrl: string;
-  id: number;
 }
 
 export interface ComponentStructure {
   render: () => void;
   remove: () => void;
+}
+
+export interface ButtonsFunctions {
+  next: string;
+  previous: string;
 }
