@@ -1,6 +1,5 @@
 import urlPokeApi from "../../globals.js";
 import {
-  type ButtonsFunctions,
   type Pokemon,
   type PokemonDataResponse,
   type PokemonListResponse,
@@ -9,16 +8,15 @@ import ButtonComponent from "../ButtonComponent/ButtonComponent.js";
 import Component from "../Component/Component.js";
 import PokemonPage from "../PokemonPage/PokemonPage.js";
 class AppComponent extends Component {
+  private pokemonPage: PokemonPage;
+  private nextPage: URL;
+  private previousPage: URL;
+
   constructor(parentElement: Element) {
     super(parentElement, "div", "container");
 
     (async () => {
-      const pokemons: Pokemon[] = await this.parsePokemonData();
-      const mainHeader = this.element.querySelector(".main-header")!;
-
-      const pokemonPage = new PokemonPage(mainHeader, pokemons);
-      pokemonPage.render();
-      await this.goToNextPage();
+      await this.initializePokedexList(this.nextPage ?? urlPokeApi);
     })();
   }
 
@@ -29,9 +27,6 @@ class AppComponent extends Component {
       <header class="main-header">
         <img alt="Pokedex logo" src="img/pokedex.png"/>
       </header>
-      <main class="main-page">
-        <ul class="pokemons-list"></ul>
-      </main>
       <footer>
         <nav class="page-change">
         </nav>
@@ -42,32 +37,38 @@ class AppComponent extends Component {
     const backPageButtonComponent = new ButtonComponent(
       changePages,
       "<",
-      () => {}
+      async () => {
+        this.pokemonPage.remove();
+        await this.initializePokedexList(this.previousPage);
+      }
     );
+
     const forwardButtonComponent = new ButtonComponent(
       changePages,
       ">",
       async () => {
-        await this.goToNextPage();
+        this.pokemonPage.remove();
+        await this.initializePokedexList(this.nextPage);
       }
     );
+
     backPageButtonComponent.render();
     forwardButtonComponent.render();
   }
 
-  private async parsePokemonData() {
-    const pokemonListData = await fetch(urlPokeApi);
+  private async getPokemonData(url: URL): Promise<PokemonListResponse> {
+    const pokemonListData = await fetch(url);
+    const pokemonData = (await pokemonListData.json()) as PokemonListResponse;
+    return pokemonData;
+  }
 
-    const { results: receivedListOfPokemons } =
-      (await pokemonListData.json()) as {
-        results: PokemonListResponse[];
-      };
-
-    console.log(receivedListOfPokemons);
-
+  private async getIndividualPokemonData(
+    listResponse: PokemonListResponse
+  ): Promise<Pokemon[]> {
+    const pokemons = listResponse.results;
     const pagePokemons: Pokemon[] = [];
 
-    for await (const pokemon of receivedListOfPokemons) {
+    for await (const pokemon of pokemons) {
       const individualPokemonResponse = await fetch(pokemon.url);
       const pokemonData =
         (await individualPokemonResponse.json()) as PokemonDataResponse;
@@ -82,13 +83,18 @@ class AppComponent extends Component {
     return pagePokemons;
   }
 
-  private async goToNextPage() {
-    const getPageUrls = await fetch(urlPokeApi);
+  private async initializePokedexList(url: URL) {
+    const pokeApiResponse = await this.getPokemonData(url);
+    const pokemons: Pokemon[] = await this.getIndividualPokemonData(
+      pokeApiResponse
+    );
 
-    const { next: nextPageUrl } = (await getPageUrls.json()) as {
-      next: ButtonsFunctions;
-    };
-    console.log(nextPageUrl);
+    this.nextPage = pokeApiResponse.next;
+    this.previousPage = pokeApiResponse.previous;
+    const mainHeader = this.element.querySelector(".main-header")!;
+    const pokemonPage = new PokemonPage(mainHeader, pokemons);
+    this.pokemonPage = pokemonPage;
+    pokemonPage.render();
   }
 }
 
