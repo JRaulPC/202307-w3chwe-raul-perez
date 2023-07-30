@@ -30,11 +30,9 @@ class AppComponent extends Component {
       <header class="main-header">
         <img alt="Pokedex logo" src="img/pokedex.png"/>
       </header>
-       <nav class="page-change">
-        </nav>
-      <footer>
 
-      </footer>`;
+       <nav class="page-change">
+      </nav>`;
 
     const changePages = this.element.querySelector(".page-change")!;
 
@@ -98,14 +96,10 @@ class AppComponent extends Component {
     this.nextPage = pokeApiResponse.next;
     this.previousPage = pokeApiResponse.previous;
     const mainHeader = this.element.querySelector(".main-header")!;
-    const pokemonPage = new PokemonPage(mainHeader, pokemons);
+    const pokemonPage = new PokemonPage(this.element, pokemons);
     this.pokemonPage = pokemonPage;
 
     const footerElement = document.querySelector(".page-change")!;
-    const pageCounterTracking = new PageCounter(
-      footerElement,
-      this.pageCounter
-    );
 
     pokemonPage.render();
     this.refreshCounter();
@@ -113,8 +107,7 @@ class AppComponent extends Component {
 
   private refreshCounter() {
     if (this.counterComponent === undefined) {
-      const footerElement = document.querySelector(".page-change")!;
-      this.counterComponent = new PageCounter(footerElement, this.pageCounter);
+      this.counterComponent = new PageCounter(this.element, this.pageCounter);
       this.counterComponent.render();
     } else {
       this.counterComponent.pageCounter = this.pageCounter;

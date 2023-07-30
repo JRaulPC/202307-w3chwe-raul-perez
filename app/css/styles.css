@@ -41,6 +41,9 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+li {
+  list-style-type: none;
+}
 
 img {
   max-width: 200px;
@@ -59,6 +62,8 @@ img {
 }
 
 .pokemons-list {
+  list-style-type: none;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 5px;
@@ -79,7 +84,7 @@ img {
   align-items: center;
   width: 250px;
   height: 250px;
-  max-height: 280;
+  box-shadow: 10px 10px #888;
 }
 
 .pokemon-card__id {
