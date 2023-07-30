@@ -6,11 +6,14 @@ import {
 } from "../../types.js";
 import ButtonComponent from "../ButtonComponent/ButtonComponent.js";
 import Component from "../Component/Component.js";
+import PageCounter from "../CounterComponent/CounterComponent.js";
 import PokemonPage from "../PokemonPage/PokemonPage.js";
 class AppComponent extends Component {
   private pokemonPage: PokemonPage;
   private nextPage: URL;
   private previousPage: URL;
+  private pageCounter = 1;
+  private counterComponent: PageCounter;
 
   constructor(parentElement: Element) {
     super(parentElement, "div", "container");
@@ -27,9 +30,10 @@ class AppComponent extends Component {
       <header class="main-header">
         <img alt="Pokedex logo" src="img/pokedex.png"/>
       </header>
-      <footer>
-        <nav class="page-change">
+       <nav class="page-change">
         </nav>
+      <footer>
+
       </footer>`;
 
     const changePages = this.element.querySelector(".page-change")!;
@@ -38,7 +42,8 @@ class AppComponent extends Component {
       changePages,
       "<",
       async () => {
-        this.pokemonPage.remove();
+        if (this.previousPage !== null) this.pokemonPage.remove();
+        this.pageCounter--;
         await this.initializePokedexList(this.previousPage);
       }
     );
@@ -47,7 +52,8 @@ class AppComponent extends Component {
       changePages,
       ">",
       async () => {
-        this.pokemonPage.remove();
+        if (this.nextPage !== null) this.pokemonPage.remove();
+        this.pageCounter++;
         await this.initializePokedexList(this.nextPage);
       }
     );
@@ -94,7 +100,26 @@ class AppComponent extends Component {
     const mainHeader = this.element.querySelector(".main-header")!;
     const pokemonPage = new PokemonPage(mainHeader, pokemons);
     this.pokemonPage = pokemonPage;
+
+    const footerElement = document.querySelector(".page-change")!;
+    const pageCounterTracking = new PageCounter(
+      footerElement,
+      this.pageCounter
+    );
+
     pokemonPage.render();
+    this.refreshCounter();
+  }
+
+  private refreshCounter() {
+    if (this.counterComponent === undefined) {
+      const footerElement = document.querySelector(".page-change")!;
+      this.counterComponent = new PageCounter(footerElement, this.pageCounter);
+      this.counterComponent.render();
+    } else {
+      this.counterComponent.pageCounter = this.pageCounter;
+      this.counterComponent.render();
+    }
   }
 }
 

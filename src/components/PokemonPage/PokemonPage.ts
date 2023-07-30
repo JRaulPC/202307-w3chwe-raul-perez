@@ -15,6 +15,7 @@ class PokemonPage extends Component {
 
     this.element.innerHTML = `
       <ul class="pokemons-list"></ul>
+     
     `;
     this.renderPokemonCards();
   }
