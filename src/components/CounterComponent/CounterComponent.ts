@@ -4,7 +4,7 @@ class PageCounter extends Component {
   public pageCounter: number;
   constructor(parentElement: Element, pageCounter: number) {
     super(parentElement, "span", "page-counter");
-    console.log(pageCounter);
+
     this.pageCounter = pageCounter;
   }
 
